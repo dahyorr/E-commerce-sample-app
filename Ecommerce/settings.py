@@ -20,8 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6x_*&o2qa_ob!e=60e#m*c)nenyzw*ey$7+m7k@1ro(74x2sxm'
+# SECURITY WARNING: keep the secret key used in production secret!5
+secret_key_path = os.path.join(BASE_DIR, 'secret_key')
+if os.path.isfile(os.path.join(BASE_DIR, 'secret_key')):
+    secret_key = open(secret_key_path, 'r')
+    SECRET_KEY = secret_key.read()
+elif os.environ.get('SECRET_KEY'):
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = '6x_*&o2qa_ob!e=60e#m*c)nenyzw*ey$7+m7k@1ro(74x2sxm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'products.apps.ProductsConfig'
+    'products.apps.ProductsConfig',
+    'authentication.apps.AuthenticationConfig',
+    'user_visit'
 ]
 
 MIDDLEWARE = [
@@ -121,3 +129,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+AUTH_USER_MODEL = 'authentication.User'
